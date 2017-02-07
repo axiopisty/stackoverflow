@@ -10,6 +10,8 @@ import javax.money.format.AmountFormatQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
 import javax.money.format.MonetaryFormats;
 import org.javamoney.moneta.Money;
+import org.javamoney.moneta.format.CurrencyStyle;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -25,6 +27,7 @@ public class TestMonetaryAmountFormat {
    * See: http://www.programcreek.com/java-api-examples/index.php?api=javax.money.format.MonetaryAmountFormat
    */
   @Test
+  @Ignore
   public void testFormatWithCurrencySymbol_1() {
     MonetaryAmountFormat maf = MonetaryFormats.getAmountFormat(
       AmountFormatQueryBuilder
@@ -50,6 +53,7 @@ public class TestMonetaryAmountFormat {
    * See: https://github.com/JavaMoney/javamoney-examples/issues/25
    */
   @Test
+  @Ignore
   public void testFormatWithCurrencySymbol_2() {
     DecimalFormatSymbols symbols = new DecimalFormatSymbols();
     MonetaryAmountFormat maf = MonetaryFormats.getAmountFormat(
@@ -68,6 +72,20 @@ public class TestMonetaryAmountFormat {
      * Expected :$12.99
      * Actual   :USD12.99
      */
+  }
+
+  /**
+   * See http://stackoverflow.com/q/40244526/328275
+   */
+  @Test
+  public void testFormatWithCurrencySymbol_workingSolution() {
+    final MonetaryAmountFormat format = MonetaryFormats.getAmountFormat(
+      AmountFormatQueryBuilder.of(Locale.US)
+        .set(CurrencyStyle.SYMBOL)
+        .build()
+    );
+    final String actual = format.format(AMOUNT);
+    assertEquals(EXPECTED, actual);
   }
 
 }
